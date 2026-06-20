@@ -1,0 +1,26 @@
+# QLoRA — LoRA on top of a 4-bit quantized frozen base.
+# Same trainable adapters as LoRA, but the (frozen) base weights are stored in
+# 4-bit (NF4), cutting base memory ~4x. This is what lets a 7B model fit a 4070.
+#
+# Backend notes:
+# - HF/CUDA: real 4-bit via bitsandbytes (load_in_4bit). CUDA only.
+# - Apple/MLX: no bitsandbytes; point the model's `mlx_model_id` at a *-4bit
+#   conversion and train LoRA on it (equivalent idea, native to MLX).
+# - On CPU / Apple-MPS-via-HF the planner downgrades this to plain LoRA.
+technique: qlora
+learning_rate: 2.0e-4
+num_train_epochs: 1
+max_steps: -1
+warmup_ratio: 0.03
+weight_decay: 0.0
+lr_scheduler_type: cosine
+logging_steps: 10
+save_steps: 200
+seed: 42
+# LoRA shape
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+# bitsandbytes 4-bit settings (HF/CUDA)
+bnb_4bit_quant_type: nf4
+bnb_4bit_use_double_quant: true

@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtual envs / uv
+.venv/
+venv/
+.python-version.local
+uv.lock
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Training artifacts (never commit weights/adapters/checkpoints)
+# Ignore the contents but keep the directory (via .gitkeep).
+outputs/*
+!outputs/.gitkeep
+wandb/
+runs/
+*.safetensors
+*.bin
+*.gguf
+*.pt
+*.ckpt
+
+# Hugging Face / model caches
+.cache/
+hf_cache/
+
+# Datasets (keep tiny samples under data/samples, ignore large pulls)
+data/cache/
+data/raw/
+
+# Locally converted/quantized model weights (e.g. MLX 4-bit caches)
+# Anchored to repo root so it does NOT match configs/models/.
+/models/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Local env
+.env

@@ -1,0 +1,17 @@
+# Qwen2.5 — Alibaba. Excellent small-model quality; the safe default to start with.
+family: qwen
+display_name: Qwen2.5-0.5B-Instruct
+params_b: 0.5
+hf_model_id: Qwen/Qwen2.5-0.5B-Instruct       # official repo; QLoRA quantizes this to 4-bit
+# mlx_model_id:                               # optional: local path to a pre-converted 4-bit MLX model
+chat_template: auto
+trust_remote_code: false
+# Standard attention + MLP projections for LoRA on the Qwen2 architecture.
+lora_target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+notes: >
+  Smallest variant fits comfortably for full fine-tuning on a 4070 and trains in
+  minutes on an M-series Mac. Bump to a larger variant once the pipeline works.
+variants:
+  - { hf_model_id: Qwen/Qwen2.5-1.5B-Instruct, params_b: 1.5 }
+  - { hf_model_id: Qwen/Qwen2.5-3B-Instruct,   params_b: 3.0 }
+  - { hf_model_id: Qwen/Qwen2.5-7B-Instruct,   params_b: 7.0 }   # QLoRA only on 12GB

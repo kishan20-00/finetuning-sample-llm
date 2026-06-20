@@ -1,0 +1,19 @@
+# Kimi — Moonshot AI. Moonshot's open models are Mixture-of-Experts and large;
+# the *smallest* open one is Moonlight-16B-A3B (16B total, ~3B active per token).
+# This is by far the heaviest model in the repo — included for study. It will NOT
+# fit a 12GB 4070 for training; reach for QLoRA, or the MLX 4-bit base on a Mac
+# with enough unified memory. Perfectly fine to keep as a script to run later.
+family: kimi
+display_name: Moonlight-16B-A3B-Instruct (MoE)
+params_b: 16.0          # total params drive the (frozen) weight-memory estimate
+hf_model_id: moonshotai/Moonlight-16B-A3B-Instruct       # official repo; QLoRA quantizes this to 4-bit
+# mlx_model_id:                                          # optional: local path to a pre-converted 4-bit MLX model
+chat_template: auto
+trust_remote_code: true  # MoE arch ships custom modeling code
+lora_target_modules: [q_proj, k_proj, v_proj, o_proj]
+notes: >
+  MoE: 16B total / ~3B active. Frozen 4-bit base is ~8-9 GiB, so QLoRA is the
+  only realistic path on consumer GPUs and even then it's tight. Treat as the
+  "stretch" target — the scripts exist so you can run it when bigger hardware
+  is available.
+variants: []

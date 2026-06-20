@@ -1,0 +1,14 @@
+# Full supervised fine-tuning: update EVERY parameter.
+# - Most memory-hungry (~16 bytes/param with Adam) -> only the smallest models
+#   on a 12GB 4070 / 24GB Mac. The hardware planner will flag when it won't fit.
+# - Lower LR than LoRA because we're moving all the weights.
+technique: full
+learning_rate: 2.0e-5
+num_train_epochs: 1
+max_steps: -1            # -1 = use epochs; set >0 to cap steps (good for smoke tests)
+warmup_ratio: 0.03
+weight_decay: 0.0
+lr_scheduler_type: cosine
+logging_steps: 10
+save_steps: 200
+seed: 42
