@@ -1,0 +1,18 @@
+# LoRA (Low-Rank Adaptation) — the workhorse PEFT method.
+# Freeze the base model; train small low-rank adapter matrices injected into the
+# attention/MLP projections. ~0.1-1% of params are trainable -> fast, cheap, and
+# the base weights stay in fp16/bf16 (no quantization).
+technique: lora
+learning_rate: 2.0e-4    # higher than full FT — only adapters are learning
+num_train_epochs: 1
+max_steps: -1
+warmup_ratio: 0.03
+weight_decay: 0.0
+lr_scheduler_type: cosine
+logging_steps: 10
+save_steps: 200
+seed: 42
+# LoRA shape
+lora_r: 16               # rank: higher = more capacity + more params
+lora_alpha: 32           # scaling; common practice is alpha = 2 * r
+lora_dropout: 0.05

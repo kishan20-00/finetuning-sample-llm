@@ -1,0 +1,69 @@
+[project]
+name = "finetuning-sample-llm"
+version = "0.1.0"
+description = "Hardware-adaptive fine-tuning samples (SFT / LoRA / QLoRA) across small LLM families: Qwen, Llama, DeepSeek, Gemma, Kimi."
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+license = { text = "MIT" }
+
+# Base dependencies are intentionally light so that `scripts/detect_hardware.py`
+# and the config layer run on a fresh machine BEFORE the heavy ML stack is
+# installed. The training frameworks live in the optional extras below.
+dependencies = [
+    "pyyaml>=6.0",
+    "psutil>=5.9",   # optional but recommended for accurate RAM/CPU reporting
+    "rich>=13.0",    # pretty hardware reports; code degrades gracefully without it
+]
+
+[project.optional-dependencies]
+# --- NVIDIA / CUDA path (RTX 4070 etc.) -----------------------------------
+# Install with:  uv sync --extra hf
+# QLoRA (4-bit) needs bitsandbytes, which only ships CUDA wheels (Linux/Windows).
+hf = [
+    "torch>=2.3",
+    "transformers>=4.44",
+    "trl>=0.9",
+    "peft>=0.12",
+    "datasets>=2.20",
+    "accelerate>=0.33",
+    "sentencepiece>=0.2",
+    "bitsandbytes>=0.43; platform_system != 'Darwin'",
+]
+
+# --- Apple Silicon path (M-series) ----------------------------------------
+# Install with:  uv sync --extra mlx
+mlx = [
+    "mlx>=0.18; platform_system == 'Darwin'",
+    "mlx-lm>=0.18; platform_system == 'Darwin'",
+    "datasets>=2.20",
+]
+
+# Experiment tracking (optional, used by both backends if installed)
+track = [
+    "wandb>=0.17",
+    "tensorboard>=2.17",
+]
+
+dev = [
+    "ruff>=0.6",
+    "pytest>=8.0",
+]
+
+[project.scripts]
+ft-detect = "core.hardware:main"
+ft-train = "scripts.train:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["core", "backends", "techniques", "scripts"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.uv]
+# Keep resolution permissive; the heavy ML wheels are pulled only via extras.
+package = true

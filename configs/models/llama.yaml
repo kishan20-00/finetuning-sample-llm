@@ -1,0 +1,16 @@
+# Llama 3.2 — Meta. The official meta-llama weights are gated (license + HF login);
+# we default to Unsloth's ungated mirror so the repo runs out of the box.
+family: llama
+display_name: Llama-3.2-1B-Instruct
+params_b: 1.0
+hf_model_id: unsloth/Llama-3.2-1B-Instruct          # ungated mirror; QLoRA quantizes this to 4-bit
+# mlx_model_id:                                     # optional: local path to a pre-converted 4-bit MLX model
+chat_template: auto
+trust_remote_code: false
+lora_target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+notes: >
+  Official id is meta-llama/Llama-3.2-1B-Instruct (request access on the Hub).
+  3B variant needs QLoRA on a 12GB 4070.
+variants:
+  - { hf_model_id: meta-llama/Llama-3.2-1B-Instruct, params_b: 1.0 }   # gated
+  - { hf_model_id: unsloth/Llama-3.2-3B-Instruct,    params_b: 3.0 }

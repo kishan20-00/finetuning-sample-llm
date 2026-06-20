@@ -1,0 +1,16 @@
+# TinyLlama 1.1B — a tiny, ungated, Llama-architecture chat model. Ideal first
+# end-to-end run: small download, trains in minutes on an M-series Mac.
+family: tinyllama
+display_name: TinyLlama-1.1B-Chat-v1.0
+params_b: 1.1
+hf_model_id: TinyLlama/TinyLlama-1.1B-Chat-v1.0          # official repo; QLoRA quantizes this to 4-bit
+# mlx_model_id:                                         # optional: local path to a pre-converted 4-bit MLX model
+chat_template: auto
+trust_remote_code: false
+# Llama architecture -> standard attention + MLP projections.
+lora_target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+notes: >
+  Llama-2 architecture at 1.1B. On Apple Silicon the MLX backend trains this in
+  minutes. `lora` trains the fp16 weights directly; `qlora` quantizes this
+  official base to 4-bit once (cached under models/) and trains LoRA on it.
+variants: []

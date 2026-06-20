@@ -1,0 +1,17 @@
+# Tiny in-repo chat dataset for smoke-testing the whole pipeline end to end.
+# Swap source to `hf` to pull a real dataset from the Hub (see commented example).
+name: sample-chat
+source: local
+path: data/samples/sample_chat.jsonl
+format: chat            # records are {"messages": [{"role","content"}, ...]}
+text_field: messages
+split: train
+max_samples: null
+
+# --- Example: a real Hugging Face dataset instead of the local sample ---------
+# source: hf
+# hf_id: HuggingFaceH4/ultrachat_200k
+# split: train_sft
+# format: chat
+# text_field: messages
+# max_samples: 2000
